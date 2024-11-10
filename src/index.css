@@ -53,6 +53,11 @@ li {
   text-overflow: ellipsis;
   max-width: 220px;
   margin-left: 22px;
+  cursor: pointer;
+}
+
+span {
+  cursor: pointer;
 }
 
 button {
