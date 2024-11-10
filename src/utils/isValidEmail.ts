@@ -4,6 +4,7 @@ const isValidEmail = (email: string) => {
     return (
       email.includes("@") &&
       domain.includes(".") &&
+      domain.length >=3 &&
       email.length >= 3 &&
       name.length > 0
     );

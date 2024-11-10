@@ -7,7 +7,7 @@ import Search from "@mui/icons-material/Search";
 import { RecipientsGroup, Toggles } from "../../types/types";
 import "./Recipients.css";
 
-type SelectedRecipientsProp = {
+type SelectedRecipientsProps = {
   expandToggles: Toggles;
   selectedRecipients: RecipientsGroup;
   handleExpand: (type: string) => void;
@@ -25,7 +25,7 @@ const SelectedRecipients = ({
   handleExpand,
   handleHide,
   handleRecipientClicked,
-}: SelectedRecipientsProp) => {
+}: SelectedRecipientsProps) => {
   return (
     <div className="selected-column">
       <h3>Selected recipients</h3>

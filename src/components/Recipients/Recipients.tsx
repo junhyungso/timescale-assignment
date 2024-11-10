@@ -41,6 +41,8 @@ const Recipients = () => {
     }
 
     const domain = input.split("@")[1];
+
+    // adds input to available recipients if it is valid based on if its a company based or invidivual email
     setAvailableRecipients((prevRecipients) => {
       const updatedRecipients = { ...prevRecipients };
       if (!updatedRecipients[domain]) {
@@ -104,6 +106,7 @@ const Recipients = () => {
       setSelectedRecipients(selectedRecipientsCopy);
     }
 
+    // removes selected company emails when the domain is clicked
     if (section === "available" && isDomain) {
       const availableRecipientsCopy = handleRemoveRecipient(
         clickedEmail,
@@ -125,6 +128,7 @@ const Recipients = () => {
       setSelectedRecipients(selectedRecipientsCopy);
     }
 
+    // removes selected company emails when email is clicked
     if (section === "selected" && !isDomain) {
       const selectedRecipientsCopy = handleRemoveRecipient(
         clickedEmail,
@@ -135,6 +139,7 @@ const Recipients = () => {
       setSelectedRecipients(selectedRecipientsCopy);
     }
 
+    // removes selected individual emails
     if (section === "selected") {
       const selectedRecipientsCopy = handleRemoveRecipient(
         clickedEmail,
@@ -151,6 +156,7 @@ const Recipients = () => {
     handleRecipientClicked(value, "available");
   };
 
+  //type is either "company", "email" or company domain names
   const toggleExpand = (type: string, expand: boolean) => {
     setExpandToggles((prevToggles) => ({
       ...prevToggles,
@@ -165,6 +171,7 @@ const Recipients = () => {
     const available: RecipientsGroup = {};
     const selected: RecipientsGroup = {};
 
+    // fill json data into correct sections
     (recipientsData as Recipient[]).forEach(({ email, isSelected }) => {
       const domain = email.split("@")[1];
 
@@ -196,6 +203,7 @@ const Recipients = () => {
   }, []);
 
   useEffect(() => {
+    //checks for email input validity
     for (let key of Object.keys(availableRecipients)) {
       if (key.startsWith(input) && input.length > 0) {
         setAvailableDomainOptions(availableRecipients[key]);

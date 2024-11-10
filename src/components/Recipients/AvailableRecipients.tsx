@@ -4,15 +4,10 @@ import ArrowRight from "@mui/icons-material/ArrowRight";
 import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
 import Search from "@mui/icons-material/Search";
 
-import {
-  DomainOptions,
-  Recipient,
-  RecipientsGroup,
-  Toggles,
-} from "../../types/types";
+import { DomainOptions, RecipientsGroup, Toggles } from "../../types/types";
 import "./Recipients.css";
 
-type AvailableRecipientsProp = {
+type AvailableRecipientsProps = {
   availableDomainOptions: DomainOptions;
   expandToggles: Toggles;
   handleSearchedEmailClicked: (e: any, value: any) => void;
@@ -40,7 +35,7 @@ const AvailableRecipients = ({
   handleHide,
   handleRecipientClicked,
   isValidInput,
-}: AvailableRecipientsProp) => {
+}: AvailableRecipientsProps) => {
   return (
     <div className="available-column">
       <h3>Available recipients</h3>
