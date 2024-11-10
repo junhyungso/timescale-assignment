@@ -26,6 +26,7 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
+  justify-content: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -33,6 +34,19 @@ body {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+h3 {
+  margin: 5px 0px 0px;
+}
+
+ul {
+  margin: 0px;
+  list-style-type: none;
+}
+
+li {
+  list-style-type: none;
 }
 
 button {

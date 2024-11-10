@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import ArrowRight from "@mui/icons-material/ArrowRight";
+import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
+import Search from "@mui/icons-material/Search";
 
 import recipientsData from "../../assets/recipientsData.json";
 import "./Recipients.css";
-
-type Recipient = {
-  email: string;
-  isSelected: boolean;
-};
-
-type RecipientsGroup = {
-  [domain: string]: string[];
-};
+import {
+  DomainOptions,
+  Recipient,
+  RecipientsGroup,
+  Toggles,
+} from "../../types/types";
 
 const Recipients = () => {
   const [input, setInput] = useState("");
@@ -19,17 +21,43 @@ const Recipients = () => {
   const [selectedRecipients, setSelectedRecipients] = useState<RecipientsGroup>(
     {}
   );
+  const [availableDomainOptions, setAvailableDomainOptions] =
+    useState<DomainOptions>([]);
+  const [expandToggles, setExpandToggles] = useState<Toggles>({
+    company: false,
+    individual: false,
+  });
 
-  const handleInput = (e: any) => {
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
 
-  const handleAddRecipient = () => {
-    if (input.includes("@") && input.length >= 3) {
+  const isValidEmail = (email: string) => {
+    const name = email.split("@")[0];
+    const domain = email.split("@")[1];
+    return (
+      email.includes("@") &&
+      domain.includes(".") &&
+      email.length >= 3 &&
+      name.length > 0
+    );
+  };
+
+  const handleAddRecipient = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && isValidEmail(input)) {
       const domain = input.split("@")[1];
       const availableRecipientsCopy = { ...availableRecipients };
-      if (availableRecipientsCopy[domain]) {
+
+      if (
+        availableRecipientsCopy[domain] &&
+        !availableRecipientsCopy[domain].includes(input)
+      ) {
         availableRecipientsCopy[domain].push(input);
+      } else if (
+        availableRecipientsCopy[domain] &&
+        availableRecipientsCopy[domain].includes(input)
+      ) {
+        alert("Email already exists!");
       } else {
         availableRecipientsCopy[domain] = [input];
       }
@@ -122,20 +150,69 @@ const Recipients = () => {
     }
   };
 
+  const handleSearchedEmailClicked = (e: any, value: any) => {
+    handleRecipientClicked(value, "available");
+  };
+
+  const handleExpand = (type: string) => {
+    if (type === "company") {
+      setExpandToggles((prevToggles) => {
+        return { ...prevToggles, company: true };
+      });
+    } else if (type === "individual") {
+      setExpandToggles((prevToggles) => {
+        return { ...prevToggles, individual: true };
+      });
+    } else {
+      setExpandToggles((prevToggles) => {
+        return { ...prevToggles, [type]: true };
+      });
+    }
+  };
+
+  const handleHide = (type: string) => {
+    if (type === "company") {
+      setExpandToggles((prevToggles) => {
+        return { ...prevToggles, company: false };
+      });
+    } else if (type === "individual") {
+      setExpandToggles((prevToggles) => {
+        return { ...prevToggles, individual: false };
+      });
+    } else {
+      setExpandToggles((prevToggles) => {
+        return { ...prevToggles, [type]: false };
+      });
+    }
+  };
+
   useEffect(() => {
     const available: RecipientsGroup = {};
     const selected: RecipientsGroup = {};
 
     (recipientsData as Recipient[]).forEach(({ email, isSelected }) => {
       const domain = email.split("@")[1];
+
       if (isSelected && selected[domain]) {
         selected[domain] = [...selected[domain], email];
       } else if (isSelected) {
         selected[domain] = [email];
       } else if (!isSelected && available[domain]) {
         available[domain] = [...available[domain], email];
+        setExpandToggles((prevToggles) => {
+          return {
+            ...prevToggles,
+            domain: true,
+          };
+        });
       } else {
         available[domain] = [email];
+        setExpandToggles((prevToggles) => {
+          return {
+            ...prevToggles,
+            [domain]: true,
+          };
+        });
       }
 
       setAvailableRecipients(available);
@@ -144,59 +221,86 @@ const Recipients = () => {
   }, []);
 
   useEffect(() => {
-    // Object.entries(availableRecipients).filter(([key,value]) => {
-    //   if (key.startsWith(input) )
-    // })
-  }, [input]);
+    for (let key of Object.keys(availableRecipients)) {
+      if (key.startsWith(input) && input.length > 0) {
+        setAvailableDomainOptions(availableRecipients[key]);
+      }
+    }
+  }, [availableRecipients, input]);
 
   return (
     <>
       <div className="row">
         <div className="available-column">
-          <h3>Available Recipients</h3>
-          <input
-            type="text"
-            value={input}
-            onChange={handleInput}
-            placeholder="Search"
+          <h3>Available recipients</h3>
+          <Autocomplete
+            size="small"
+            disablePortal
+            options={availableDomainOptions}
+            onChange={handleSearchedEmailClicked}
+            renderInput={(params) => (
+              <TextField
+                onKeyDown={handleAddRecipient}
+                {...params}
+                onChange={handleInput}
+                label={
+                  <div className="textfield-label">
+                    <Search />
+                    <div>search</div>
+                  </div>
+                }
+                variant="standard"
+              />
+            )}
           />
-          <button onClick={handleAddRecipient}>Add</button>
           <div className="available-container">
             {Object.entries(availableRecipients).map(([domain, emails]) => {
-              return emails.length === 1 ? (
-                <div>
-                  <button
-                    onClick={() =>
-                      handleRecipientClicked(emails[0], "available")
-                    }
-                  >
-                    {emails[0]}
-                  </button>
-                </div>
-              ) : (
+              return emails.length > 1 ? (
                 <>
-                  <div>
-                    <button>{">"}</button>
-                    <button
+                  <div className="domain-container">
+                    <div>
+                      {!expandToggles[domain] && (
+                        <ArrowRight
+                          className="arrow"
+                          onClick={() => handleExpand(domain)}
+                        />
+                      )}
+                      {expandToggles[domain] && (
+                        <ArrowDropDown
+                          className="arrow"
+                          onClick={() => handleHide(domain)}
+                        />
+                      )}
+                    </div>
+                    <span
                       onClick={() =>
                         handleRecipientClicked(domain, "available", true)
                       }
                     >
                       {domain}
-                    </button>
+                    </span>
                   </div>
-                  {emails.map((email: string) => (
-                    <div>
-                      <button
-                        onClick={() =>
-                          handleRecipientClicked(email, "available")
-                        }
-                      >
-                        {email}
-                      </button>
-                    </div>
-                  ))}
+                  <ul>
+                    {expandToggles[domain] &&
+                      emails.map((email: string) => (
+                        <li
+                          className="list"
+                          onClick={() =>
+                            handleRecipientClicked(email, "available")
+                          }
+                        >
+                          {email}
+                        </li>
+                      ))}
+                  </ul>
                 </>
+              ) : (
+                <li
+                  className="list"
+                  onClick={() => handleRecipientClicked(emails[0], "available")}
+                >
+                  {emails[0]}
+                </li>
               );
             })}
           </div>
@@ -204,56 +308,93 @@ const Recipients = () => {
         <div className="selected-column">
           <h3>Selected recipients</h3>
           <div className="selected-container">
-            <div className="collapsible-group">
-              <strong>Company recipients</strong>
-              <ul>
-                {Object.entries(selectedRecipients).map(
-                  ([domain, emails]) =>
-                    emails?.length > 1 && (
-                      <div key={domain} className="domain-group">
-                        <button
-                          onClick={() =>
-                            handleRecipientClicked(domain, "selected", true)
-                          }
-                        >
-                          {domain}
-                        </button>
-                        <div>
-                          {emails.map((email) => (
+            <div>
+              <div className="domain-container">
+                <div>
+                  {!expandToggles.company && (
+                    <ArrowRight onClick={() => handleExpand("company")} />
+                  )}
+                  {expandToggles.company && (
+                    <ArrowDropDown onClick={() => handleHide("company")} />
+                  )}
+                </div>
+                <span>Company recipients</span>
+              </div>
+              {expandToggles.company && (
+                <ul>
+                  {Object.entries(selectedRecipients).map(
+                    ([domain, emails]) =>
+                      emails?.length > 1 && (
+                        <div key={domain} className="domain-group">
+                          <div className="domain-container">
                             <div>
-                              <button
-                                onClick={() =>
-                                  handleRecipientClicked(email, "selected")
-                                }
-                              >
-                                {email}
-                              </button>
+                              {!expandToggles[domain] && (
+                                <ArrowRight
+                                  onClick={() => handleExpand(domain)}
+                                />
+                              )}
+                              {expandToggles[domain] && (
+                                <ArrowDropDown
+                                  onClick={() => handleHide(domain)}
+                                />
+                              )}
                             </div>
-                          ))}
+                            <span
+                              onClick={() =>
+                                handleRecipientClicked(domain, "selected", true)
+                              }
+                            >
+                              {domain}
+                            </span>
+                          </div>
+                          <ul>
+                            {expandToggles[domain] &&
+                              emails.map((email) => (
+                                <li
+                                  className="list"
+                                  onClick={() =>
+                                    handleRecipientClicked(email, "selected")
+                                  }
+                                >
+                                  {email}
+                                </li>
+                              ))}
+                          </ul>
                         </div>
-                      </div>
-                    )
-                )}
-              </ul>
+                      )
+                  )}
+                </ul>
+              )}
             </div>
-            <div className="collapsible-group">
-              <strong>Email recipients</strong>
-              <ul>
-                {Object.values(selectedRecipients).map(
-                  (emails) =>
-                    emails?.length === 1 && (
-                      <div>
-                        <button
+            <div>
+              <div className="domain-container">
+                <div>
+                  {!expandToggles.individual && (
+                    <ArrowRight onClick={() => handleExpand("individual")} />
+                  )}
+                  {expandToggles.individual && (
+                    <ArrowDropDown onClick={() => handleHide("individual")} />
+                  )}
+                </div>
+                <span>Email recipients</span>
+              </div>
+              {expandToggles.individual && (
+                <ul>
+                  {Object.values(selectedRecipients).map(
+                    (emails) =>
+                      emails?.length === 1 && (
+                        <li
+                          className="list"
                           onClick={() =>
                             handleRecipientClicked(emails[0], "selected")
                           }
                         >
                           {emails[0]}
-                        </button>
-                      </div>
-                    )
-                )}
-              </ul>
+                        </li>
+                      )
+                  )}
+                </ul>
+              )}
             </div>
           </div>
         </div>

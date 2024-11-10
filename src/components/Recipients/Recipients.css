@@ -1,36 +1,58 @@
 .row { 
     display:  flex;
-  }
-  .available-column {
-    border: 1px solid black;
-    border-radius: 25px;
-    padding: 0px 10px 10px;
-    margin: 20px;
-  }
-  
-  .available-container {
-    border: 1px solid black;
-    border-radius: 25px;
-    margin: 10px 0px 0px;
-    padding: 10px;
-  }
-  
-  .selected-column {
-    border: 1px solid black;
-    border-radius: 25px;
-    padding: 0px 10px 20px;
-    margin: 20px;
-  }
-  
-  .selected-container {
-    border: 1px solid black;
-    border-radius: 25px;
-    margin: 10px 0px 0px;
-    padding: 10px;
-  }
-  
-  .selected-heading {
-    margin-bottom: 30px;
-  }
-  
-  
+    align-items: center;
+    justify-content: center;
+}
+
+.available-column {
+  border: 1px solid black;
+  padding: 10px 10px;
+  margin: 20px;
+  width: 250px;
+  height: 300px;
+}
+
+.available-container {
+  border: 1px solid black;
+  margin: 10px 0px 0px;
+  padding: 10px;
+  height: 180px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.selected-column {
+  border: 1px solid black;
+  padding: 10px 10px;
+  margin: 20px;
+  width: 250px;
+  height: 300px;
+}
+
+.selected-container {
+  border: 1px solid black;
+  margin: 55px 0px 0px;
+  padding: 10px;
+  height: 180px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.selected-heading {
+  margin-bottom: 30px;
+}
+
+.domain-container {
+  display: flex;
+}
+
+.textfield-label {
+  display: flex;
+}
+
+.list {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
