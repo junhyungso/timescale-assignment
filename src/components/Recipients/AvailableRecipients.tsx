@@ -21,6 +21,7 @@ type AvailableRecipientsProps = {
     section: string,
     isDomain?: boolean
   ) => void;
+  input: string;
   isValidInput: boolean;
 };
 
@@ -34,6 +35,7 @@ const AvailableRecipients = ({
   handleExpand,
   handleHide,
   handleRecipientClicked,
+  input,
   isValidInput,
 }: AvailableRecipientsProps) => {
   return (
@@ -44,6 +46,7 @@ const AvailableRecipients = ({
         disablePortal
         options={availableDomainOptions}
         onChange={handleSearchedEmailClicked}
+        value={input}
         renderInput={(params) => (
           <TextField
             error={!isValidInput}

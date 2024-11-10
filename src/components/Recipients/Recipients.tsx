@@ -53,8 +53,15 @@ const Recipients = () => {
         setIsValidInput(false);
         return prevRecipients;
       }
+
+      //sorts recipient domains to put companies before individuals
+      const entries = Object.entries(updatedRecipients);
+      entries.sort((a, b) => b[1].length - a[1].length);
+      const sortedRecipients = Object.fromEntries(entries);
+
+      setInput("");
       setIsValidInput(true);
-      return updatedRecipients;
+      return sortedRecipients;
     });
   };
 
@@ -154,6 +161,7 @@ const Recipients = () => {
 
   const handleSearchedEmailClicked = (e: any, value: any) => {
     handleRecipientClicked(value, "available");
+    setInput("");
   };
 
   //type is either "company", "email" or company domain names
@@ -226,6 +234,7 @@ const Recipients = () => {
         handleExpand={handleExpand}
         handleHide={handleHide}
         handleRecipientClicked={handleRecipientClicked}
+        input={input}
         isValidInput={isValidInput}
       />
       <SelectedRecipients
