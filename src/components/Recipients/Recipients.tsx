@@ -256,7 +256,7 @@ const Recipients = () => {
           <div className="available-container">
             {Object.entries(availableRecipients).map(([domain, emails]) => {
               return emails.length > 1 ? (
-                <>
+                <div key={domain}>
                   <div className="domain-container">
                     <div>
                       {!expandToggles[domain] && (
@@ -280,10 +280,11 @@ const Recipients = () => {
                       {domain}
                     </span>
                   </div>
-                  <ul>
+                  <ul className="available-email-list">
                     {expandToggles[domain] &&
                       emails.map((email: string) => (
                         <li
+                          key={email}
                           className="company-email-list"
                           onClick={() =>
                             handleRecipientClicked(email, "available")
@@ -293,9 +294,10 @@ const Recipients = () => {
                         </li>
                       ))}
                   </ul>
-                </>
+                </div>
               ) : (
                 <li
+                  key={emails[0]}
                   onClick={() => handleRecipientClicked(emails[0], "available")}
                 >
                   {emails[0]}
@@ -319,60 +321,64 @@ const Recipients = () => {
                 </div>
                 <strong>Company recipients</strong>
               </div>
-              {expandToggles.company && (
-                <ul>
-                  {Object.entries(selectedRecipients).map(
-                    ([domain, emails]) =>
-                      emails?.length > 1 && (
-                        <div key={domain} className="domain-group">
-                          <div className="domain-container">
-                            <div className="selected-company-list">
-                              {!expandToggles[domain] && (
-                                <ArrowRight
-                                  onClick={() => handleExpand(domain)}
-                                />
-                              )}
-                              {expandToggles[domain] && (
-                                <ArrowDropDown
-                                  onClick={() => handleHide(domain)}
-                                />
-                              )}
-                            </div>
-                            <span
-                              onClick={() =>
-                                handleRecipientClicked(domain, "selected", true)
-                              }
-                            >
-                              {domain}
-                            </span>
+              {expandToggles.company &&
+                Object.entries(selectedRecipients).map(
+                  ([domain, emails]) =>
+                    emails?.length > 1 && (
+                      <div key={domain} className="domain-group">
+                        <div className="domain-container">
+                          <div className="selected-company-list">
+                            {!expandToggles[domain] && (
+                              <ArrowRight
+                                onClick={() => handleExpand(domain)}
+                              />
+                            )}
+                            {expandToggles[domain] && (
+                              <ArrowDropDown
+                                onClick={() => handleHide(domain)}
+                              />
+                            )}
                           </div>
-                          <ul className="selected-company-email-list">
-                            {expandToggles[domain] &&
-                              emails.map((email) => (
-                                <li
-                                  className="selected-company-email-list"
-                                  onClick={() =>
-                                    handleRecipientClicked(email, "selected")
-                                  }
-                                >
-                                  {email}
-                                </li>
-                              ))}
-                          </ul>
+                          <span
+                            onClick={() =>
+                              handleRecipientClicked(domain, "selected", true)
+                            }
+                          >
+                            {domain}
+                          </span>
                         </div>
-                      )
-                  )}
-                </ul>
-              )}
+                        <ul className="selected-company-email-list">
+                          {expandToggles[domain] &&
+                            emails.map((email) => (
+                              <li
+                                key={email}
+                                className="selected-company-email-list"
+                                onClick={() =>
+                                  handleRecipientClicked(email, "selected")
+                                }
+                              >
+                                {email}
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
+                    )
+                )}
             </div>
             <div>
               <div className="domain-container">
                 <div>
                   {!expandToggles.individual && (
-                    <ArrowRight onClick={() => handleExpand("individual")} />
+                    <ArrowRight
+                      data-testid={"expand-arrow"}
+                      onClick={() => handleExpand("individual")}
+                    />
                   )}
                   {expandToggles.individual && (
-                    <ArrowDropDown onClick={() => handleHide("individual")} />
+                    <ArrowDropDown
+                      data-testid={"hide-arrow"}
+                      onClick={() => handleHide("individual")}
+                    />
                   )}
                 </div>
                 <strong>Email recipients</strong>
@@ -383,6 +389,7 @@ const Recipients = () => {
                     (emails) =>
                       emails?.length === 1 && (
                         <li
+                          key={emails[0]}
                           className="selected-email-list"
                           onClick={() =>
                             handleRecipientClicked(emails[0], "selected")

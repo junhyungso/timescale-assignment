@@ -61,6 +61,10 @@
   margin-left: 44px;
 }
 
+.available-email-list {
+  margin-bottom: 20px;
+}
+
 .selected-company-list {
   margin-left: 22px;
 }
@@ -70,5 +74,5 @@
 }
 
 .selected-email-list {
-  margin-left: 22px;
+  margin-left: 28px;
 }
