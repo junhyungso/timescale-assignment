@@ -284,7 +284,7 @@ const Recipients = () => {
                     {expandToggles[domain] &&
                       emails.map((email: string) => (
                         <li
-                          className="list"
+                          className="company-email-list"
                           onClick={() =>
                             handleRecipientClicked(email, "available")
                           }
@@ -296,7 +296,6 @@ const Recipients = () => {
                 </>
               ) : (
                 <li
-                  className="list"
                   onClick={() => handleRecipientClicked(emails[0], "available")}
                 >
                   {emails[0]}
@@ -318,7 +317,7 @@ const Recipients = () => {
                     <ArrowDropDown onClick={() => handleHide("company")} />
                   )}
                 </div>
-                <span>Company recipients</span>
+                <strong>Company recipients</strong>
               </div>
               {expandToggles.company && (
                 <ul>
@@ -327,7 +326,7 @@ const Recipients = () => {
                       emails?.length > 1 && (
                         <div key={domain} className="domain-group">
                           <div className="domain-container">
-                            <div>
+                            <div className="selected-company-list">
                               {!expandToggles[domain] && (
                                 <ArrowRight
                                   onClick={() => handleExpand(domain)}
@@ -347,11 +346,11 @@ const Recipients = () => {
                               {domain}
                             </span>
                           </div>
-                          <ul>
+                          <ul className="selected-company-email-list">
                             {expandToggles[domain] &&
                               emails.map((email) => (
                                 <li
-                                  className="list"
+                                  className="selected-company-email-list"
                                   onClick={() =>
                                     handleRecipientClicked(email, "selected")
                                   }
@@ -376,7 +375,7 @@ const Recipients = () => {
                     <ArrowDropDown onClick={() => handleHide("individual")} />
                   )}
                 </div>
-                <span>Email recipients</span>
+                <strong>Email recipients</strong>
               </div>
               {expandToggles.individual && (
                 <ul>
@@ -384,7 +383,7 @@ const Recipients = () => {
                     (emails) =>
                       emails?.length === 1 && (
                         <li
-                          className="list"
+                          className="selected-email-list"
                           onClick={() =>
                             handleRecipientClicked(emails[0], "selected")
                           }

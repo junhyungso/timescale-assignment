@@ -43,10 +43,16 @@ h3 {
 ul {
   margin: 0px;
   list-style-type: none;
+  padding: 0px;
 }
 
 li {
   list-style-type: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+  margin-left: 22px;
 }
 
 button {

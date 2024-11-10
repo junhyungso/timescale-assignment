@@ -6,14 +6,18 @@
 
 .available-column {
   border: 1px solid black;
+  border-radius: 5px;
   padding: 10px 10px;
   margin: 20px;
   width: 250px;
   height: 300px;
+  box-shadow: 10px 10px 5px #aaaaaa;
+
 }
 
 .available-container {
   border: 1px solid black;
+  border-radius: 5px;
   margin: 10px 0px 0px;
   padding: 10px;
   height: 180px;
@@ -23,14 +27,17 @@
 
 .selected-column {
   border: 1px solid black;
+  border-radius: 5px;
   padding: 10px 10px;
   margin: 20px;
   width: 250px;
   height: 300px;
+  box-shadow: 10px 10px 5px #aaaaaa;
 }
 
 .selected-container {
   border: 1px solid black;
+  border-radius: 5px;
   margin: 55px 0px 0px;
   padding: 10px;
   height: 180px;
@@ -50,9 +57,18 @@
   display: flex;
 }
 
-.list {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 220px;
+.company-email-list {
+  margin-left: 44px;
+}
+
+.selected-company-list {
+  margin-left: 22px;
+}
+
+.selected-company-email-list {
+  margin-left: 22px;
+}
+
+.selected-email-list {
+  margin-left: 22px;
 }
