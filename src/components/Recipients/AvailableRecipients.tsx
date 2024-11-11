@@ -70,16 +70,16 @@ const AvailableRecipients = ({
             <div key={domain}>
               <div className="domain-container">
                 <div>
-                  {!expandToggles[domain] && (
+                  {!expandToggles[domain + "Available"] && (
                     <ArrowRight
                       className="arrow"
-                      onClick={() => handleExpand(domain)}
+                      onClick={() => handleExpand(domain + "Available")}
                     />
                   )}
-                  {expandToggles[domain] && (
+                  {expandToggles[domain + "Available"] && (
                     <ArrowDropDown
                       className="arrow"
-                      onClick={() => handleHide(domain)}
+                      onClick={() => handleHide(domain + "Available")}
                     />
                   )}
                 </div>
@@ -92,7 +92,7 @@ const AvailableRecipients = ({
                 </span>
               </div>
               <ul className="available-email-list">
-                {expandToggles[domain] &&
+                {expandToggles[domain + "Available"] &&
                   emails.map((email: string) => (
                     <li
                       key={email}

@@ -44,18 +44,18 @@ const Recipients = () => {
 
     // adds input to available recipients if it is valid based on if its a company based or invidivual email
     setAvailableRecipients((prevRecipients) => {
-      const updatedRecipients = { ...prevRecipients };
-      if (!updatedRecipients[domain]) {
-        updatedRecipients[domain] = [input];
-      } else if (!updatedRecipients[domain].includes(input)) {
-        updatedRecipients[domain] = [...updatedRecipients[domain], input];
+      if (!prevRecipients[domain]) {
+        prevRecipients[domain] = [input];
+      } else if (!prevRecipients[domain].includes(input)) {
+        prevRecipients[domain] = [...prevRecipients[domain], input];
       } else {
+        //invalid
         setIsValidInput(false);
         return prevRecipients;
       }
 
       //sorts recipient domains to put companies before individuals
-      const entries = Object.entries(updatedRecipients);
+      const entries = Object.entries(prevRecipients);
       entries.sort((a, b) => b[1].length - a[1].length);
       const sortedRecipients = Object.fromEntries(entries);
 
@@ -92,7 +92,7 @@ const Recipients = () => {
     isDomain?: boolean
   ) => {
     const domain = isDomain ? clickedEmail : clickedEmail?.split("@")[1];
-
+    // removes chosen available email when the email is clicked
     if (section === "available" && !isDomain) {
       const selectedRecipientsCopy = { ...selectedRecipients };
       const availableRecipientsCopy = handleRemoveRecipient(
@@ -101,18 +101,17 @@ const Recipients = () => {
         false
       );
 
-      setAvailableRecipients(availableRecipientsCopy);
-
       if (!selectedRecipientsCopy[domain]) {
         selectedRecipientsCopy[domain] = [clickedEmail];
       } else {
         selectedRecipientsCopy[domain].push(clickedEmail);
       }
 
+      setAvailableRecipients(availableRecipientsCopy);
       setSelectedRecipients(selectedRecipientsCopy);
     }
 
-    // removes selected company emails when the domain is clicked
+    // removes chosen available company emails when the domain is clicked
     if (section === "available" && isDomain) {
       const availableRecipientsCopy = handleRemoveRecipient(
         clickedEmail,
@@ -134,7 +133,7 @@ const Recipients = () => {
       setSelectedRecipients(selectedRecipientsCopy);
     }
 
-    // removes selected company emails when email is clicked
+    // removes chosen selected company emails when email is clicked
     if (section === "selected" && !isDomain) {
       const selectedRecipientsCopy = handleRemoveRecipient(
         clickedEmail,
@@ -145,7 +144,7 @@ const Recipients = () => {
       setSelectedRecipients(selectedRecipientsCopy);
     }
 
-    // removes selected individual emails
+    // removes chosen selected individual emails
     if (section === "selected") {
       const selectedRecipientsCopy = handleRemoveRecipient(
         clickedEmail,
@@ -191,7 +190,7 @@ const Recipients = () => {
         setExpandToggles((prevToggles) => {
           return {
             ...prevToggles,
-            domain: true,
+            [domain]: true,
           };
         });
       } else {
