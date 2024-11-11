@@ -165,6 +165,7 @@ const Recipients = () => {
 
   //type is either "company", "email" or company domain names
   const toggleExpand = (type: string, expand: boolean) => {
+    console.log(type);
     setExpandToggles((prevToggles) => ({
       ...prevToggles,
       [type]: expand,
