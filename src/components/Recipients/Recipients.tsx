@@ -150,7 +150,7 @@ const Recipients = () => {
     }
 
     // removes chosen selected individual emails
-    if (section === "selected") {
+    if (section === "selected" && isDomain) {
       const selectedRecipientsCopy = handleRemoveRecipient(
         clickedEmail,
         domain,

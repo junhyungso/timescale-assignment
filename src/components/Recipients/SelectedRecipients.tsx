@@ -1,8 +1,5 @@
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import ArrowRight from "@mui/icons-material/ArrowRight";
 import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
-import Search from "@mui/icons-material/Search";
 
 import { RecipientsGroup, Toggles } from "../../types/types";
 import "./Recipients.css";
