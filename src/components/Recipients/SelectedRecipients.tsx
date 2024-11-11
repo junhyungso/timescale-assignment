@@ -26,6 +26,7 @@ const SelectedRecipients = ({
   handleHide,
   handleRecipientClicked,
 }: SelectedRecipientsProps) => {
+  console.log(expandToggles);
   return (
     <div className="selected-column">
       <h3>Selected recipients</h3>

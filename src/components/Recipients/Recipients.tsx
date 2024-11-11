@@ -128,7 +128,12 @@ const Recipients = () => {
       } else {
         selectedRecipientsCopy[clickedEmail] = domainEmails;
       }
-
+      setExpandToggles((prevToggles) => {
+        return {
+          ...prevToggles,
+          [domain + "Selected"]: true,
+        };
+      });
       setAvailableRecipients(availableRecipientsCopy);
       setSelectedRecipients(selectedRecipientsCopy);
     }
@@ -201,12 +206,6 @@ const Recipients = () => {
         });
       } else {
         available[domain] = [email];
-        setExpandToggles((prevToggles) => {
-          return {
-            ...prevToggles,
-            [domain + "Available"]: true,
-          };
-        });
       }
 
       setAvailableRecipients(available);
