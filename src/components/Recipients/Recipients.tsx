@@ -75,12 +75,11 @@ const Recipients = () => {
       ? { ...selectedRecipients }
       : { ...availableRecipients };
 
-    if (recipientCopy[domain].length === 1 || isDomain)
+    if (recipientCopy[domain]?.length === 1 || isDomain)
       delete recipientCopy[domain];
     else {
-      const newDomainEmails = recipientCopy[domain].filter(
-        (email) => email !== clickedEmail
-      );
+      const newDomainEmails =
+        recipientCopy[domain]?.filter((email) => email !== clickedEmail) ?? [];
       recipientCopy[domain] = newDomainEmails;
     }
 
@@ -92,7 +91,7 @@ const Recipients = () => {
     section: string,
     isDomain?: boolean
   ) => {
-    const domain = isDomain ? clickedEmail : clickedEmail.split("@")[1];
+    const domain = isDomain ? clickedEmail : clickedEmail?.split("@")[1];
 
     if (section === "available" && !isDomain) {
       const selectedRecipientsCopy = { ...selectedRecipients };
