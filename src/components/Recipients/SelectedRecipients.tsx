@@ -49,14 +49,14 @@ const SelectedRecipients = ({
                   <div key={domain} className="domain-group">
                     <div className="domain-container">
                       <div className="selected-company-list">
-                        {!expandToggles[domain + "selected"] && (
+                        {!expandToggles[domain + "Selected"] && (
                           <ArrowRight
-                            onClick={() => handleExpand(domain + "selected")}
+                            onClick={() => handleExpand(domain + "Selected")}
                           />
                         )}
-                        {expandToggles[domain + "selected"] && (
+                        {expandToggles[domain + "Selected"] && (
                           <ArrowDropDown
-                            onClick={() => handleHide(domain + "selected")}
+                            onClick={() => handleHide(domain + "Selected")}
                           />
                         )}
                       </div>
@@ -69,7 +69,7 @@ const SelectedRecipients = ({
                       </span>
                     </div>
                     <ul className="selected-company-email-list">
-                      {expandToggles[domain + "selected"] &&
+                      {expandToggles[domain + "Selected"] &&
                         emails.map((email) => (
                           <li
                             key={email}

@@ -164,7 +164,6 @@ const Recipients = () => {
 
   //type is either "company", "email" or company domain names
   const toggleExpand = (type: string, expand: boolean) => {
-    console.log(type);
     setExpandToggles((prevToggles) => ({
       ...prevToggles,
       [type]: expand,
@@ -184,6 +183,12 @@ const Recipients = () => {
 
       if (isSelected && selected[domain]) {
         selected[domain] = [...selected[domain], email];
+        setExpandToggles((prevToggles) => {
+          return {
+            ...prevToggles,
+            [domain + "Selected"]: true,
+          };
+        });
       } else if (isSelected) {
         selected[domain] = [email];
       } else if (!isSelected && available[domain]) {
@@ -191,7 +196,7 @@ const Recipients = () => {
         setExpandToggles((prevToggles) => {
           return {
             ...prevToggles,
-            [domain]: true,
+            [domain + "Available"]: true,
           };
         });
       } else {
@@ -199,7 +204,7 @@ const Recipients = () => {
         setExpandToggles((prevToggles) => {
           return {
             ...prevToggles,
-            [domain]: true,
+            [domain + "Available"]: true,
           };
         });
       }
