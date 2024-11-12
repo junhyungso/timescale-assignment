@@ -7,6 +7,7 @@ Users can click recipients or company domains in selected side to remove
 To run:
 
 npm install
+
 npm run dev
 
 To run tests:
